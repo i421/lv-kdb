@@ -1,4 +1,4 @@
-Laravel Kingbase database (lv-kdb)
+Laravel Kingbase database(v8) (lv-kdb)
 
 1. Step1: Install Through Composer
 ```
@@ -30,4 +30,4 @@ Open config/datbase.php and, to your "connections" array, add:
 ],
 ```
 
-Make sure to update host, port, database, username, password and schema to your configuration. Note the database and schema fields should be the same.
+Make sure to update host, port, database, username, password and schema to your configuration.
