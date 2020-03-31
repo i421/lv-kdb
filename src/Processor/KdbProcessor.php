@@ -7,6 +7,20 @@ use Illuminate\Database\Query\Processors\Processor;
 
 class KdbProcessor extends Processor
 {
+    // 这个方法用来修改查询结果的编码，因为金仓v7数据不支持utf-8编码修改 所以在直接把数据库查询出来的结果修改编码
+    public function processSelect(Builder $query, $results)
+    {
+        foreach($results as &$result){
+            foreach($result as $key => $value){
+                if(json_encode($value)=== false) {
+                    $result->$key = mb_detect_encoding($value, array('GBK', 'UTF-8')) != 'UTF-8'?iconv('GBK','UTF-8', $value):$value;
+                }
+            }
+        }
+        return $results;
+    }
+
+
     /**
      * Process an "insert get ID" query.
      *
