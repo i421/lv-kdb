@@ -8,13 +8,16 @@ use Illuminate\Database\Connectors\ConnectorInterface;
 
 class KdbConnector extends Connector implements ConnectorInterface
 {
+    const ODBC_DRIVER_NAME = 'KingbaseES V8 ODBC Driver';
+
     /**
      * The default PDO connection options.
      *
      * @var array
      */
     protected $options = [
-        PDO::ATTR_CASE => PDO::CASE_NATURAL,
+        //PDO::ATTR_CASE => PDO::CASE_NATURAL,
+        PDO::ATTR_CASE => PDO::CASE_LOWER,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL,
         PDO::ATTR_STRINGIFY_FETCHES => false,
@@ -128,14 +131,7 @@ class KdbConnector extends Connector implements ConnectorInterface
 
         $host = isset($host) ? "host={$host};" : '';
 
-        $dsn = "kdb:{$host}dbname={$database}";
-
-        // If a port was specified, we will add it to this Postgres DSN connections
-        // format. Once we have done that we are ready to return this connection
-        // string back out for usage, as this has been fully constructed here.
-        if (isset($config['port'])) {
-            $dsn .= ";port={$port}";
-        }
+        $dsn = 'odbc:Driver={'.self::ODBC_DRIVER_NAME.'};Servername='.$config['host'].';Database='.$config['database'].';Port='.$config['port'].';';
 
         return $this->addSslOptions($dsn, $config);
     }
